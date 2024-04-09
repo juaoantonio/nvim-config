@@ -3,6 +3,14 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.opt.backspace = '2'
+vim.opt.showcmd = true
+vim.opt.laststatus = 2
+vim.opt.autowrite = true
+vim.opt.cursorline = true
+vim.opt.autoread = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
 
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
@@ -71,10 +79,24 @@ vim.opt.scrolloff = 6
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
+
+-- Vim-tmux-navigator
+vim.keymap.set('n', '<C-h>', '<CMD>TmuxNavigateLeft<CR>', { silent = true, desc = 'Navigate left (Tmux)' })
+vim.keymap.set('n', '<C-j>', '<CMD>TmuxNavigateDown<CR>', { silent = true, desc = 'Navigate down (Tmux)' })
+vim.keymap.set('n', '<C-k>', '<CMD>TmuxNavigateUp<CR>', { silent = true, desc = 'Navigate up (Tmux)' })
+vim.keymap.set('n', '<C-l>', '<CMD>TmuxNavigateRight<CR>', { silent = true, desc = 'Navigate right (Tmux)' })
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Split Windows
+vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Split Horizontally' })
+vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Split Vertically' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -156,10 +178,20 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- Typescript Tools
+  -- {
+  --   'pmizio/typescript-tools.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+  --   opts = {},
+  -- },
+
   {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
+    'nvimtools/none-ls.nvim',
+    optional = true,
+    opts = function(_, opts)
+      local nls = require 'null-ls'
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, nls.builtins.formatting.prettier)
+    end,
   },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -547,12 +579,22 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        ['javascript'] = { 'prettier' },
+        ['javascriptreact'] = { 'prettier' },
+        ['typescript'] = { 'prettier' },
+        ['typescriptreact'] = { 'prettier' },
+        ['vue'] = { 'prettier' },
+        ['css'] = { 'prettier' },
+        ['scss'] = { 'prettier' },
+        ['less'] = { 'prettier' },
+        ['html'] = { 'prettier' },
+        ['json'] = { 'prettier' },
+        ['jsonc'] = { 'prettier' },
+        ['yaml'] = { 'prettier' },
+        ['markdown'] = { 'prettier' },
+        ['markdown.mdx'] = { 'prettier' },
+        ['graphql'] = { 'prettier' },
+        ['handlebars'] = { 'prettier' },
       },
     },
   },
