@@ -11,4 +11,9 @@ return {
     oil.setup()
     vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
   end,
+  init = function()
+    if vim.fn.argc() == 0 then
+      require('oil').open()
+    end
+  end,
 }
