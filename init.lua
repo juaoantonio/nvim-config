@@ -77,6 +77,7 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 6
 
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -240,6 +241,7 @@ require('lazy').setup({
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>R'] = { name = '[R]eplace', _ = 'which_key_ignore' },
+        ['<leader>q'] = { name = 'Quit / [S]ession', _ = 'which_key_ignore' },
       }
     end,
   },
